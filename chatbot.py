@@ -2,6 +2,8 @@
 # Author: Ubial
 # Mrs. Ubial's Birthday
 
+# A basic chatbot
+
 import random
 import time
 
