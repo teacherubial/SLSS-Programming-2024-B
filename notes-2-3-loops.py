@@ -42,3 +42,9 @@ while counter < 1000:
     # increment counter by 1
     # counter = counter + 1
     counter += 1
+
+# Input validation
+user_answer = input("Do you like ice cream? ")
+
+while user_answer.lower().strip(",.?! ") not in ["yes", "no", "yeah", "nah"]:
+    user_answer = input("Do you like ice cream? (yes or no) ")
