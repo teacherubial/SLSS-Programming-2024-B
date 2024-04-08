@@ -38,7 +38,7 @@ def pyramid(base_width: int):
     """
 
     for i in range(base_width):
-        print("*" * (i + 1))
+        print(stars(i + 1))
 
 
 # Multiply strings
