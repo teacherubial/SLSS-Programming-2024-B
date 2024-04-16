@@ -16,6 +16,32 @@ class Pokemon:  # always name classes with capital
         self.weight = 0
         self.height = 0
         self.type = "Normal"
+        self.actual_cry = "Rooooooooooooooar"
+
+    def cry(self) -> str:
+        """Represents the sound a Pokemon makes
+
+        Returns:
+            - As a string the sound a pokemon makes
+            - e.g. "{name} says, "{actual_cry}"""
+
+        return f'{self.name} says, "{self.actual_cry}!"'
+
+    def consume(self, item: str) -> str:
+        """Pokemon consumes the item
+
+        Params:
+            - the item the pokemon consumes
+
+        Returns:
+            - the response of the pokemon
+        """
+        if item.lower() == "berry":
+            return f'{self.name} eats the berry and says, "YUM!"'
+        elif item.lower() == "potion":
+            return f"{self.name} feels much better after the potion!"
+        else:
+            return f"{self.name} batted away the {item}!"
 
 
 def main():
@@ -26,8 +52,8 @@ def main():
 
     # Access the properties inside pokemon_one
     # Print the name of pokemon_one
-    # print(pokemon_one.name)
-    # print(pokemon_one.type)
+    print(pokemon_one.name)
+    print(pokemon_one.type)
 
     # Change the values of the propeties
     pokemon_one.name = "Pikachu"
@@ -35,8 +61,8 @@ def main():
     pokemon_one.id = 25
 
     # Print the values from pokemon_one
-    # print(pokemon_one.name)
-    # print(pokemon_one.type)
+    print(pokemon_one.name)
+    print(pokemon_one.type)
 
     # TODO: Create something 'Squirtle'-like
     #  - Create a new Pokemon object
@@ -53,6 +79,16 @@ def main():
     print(pokemon_two.name)
     print(pokemon_two.id)
     print(pokemon_two.type)
+
+    # Test Pokemon cry
+    print(pokemon_one.cry())
+    print(pokemon_two.cry())
+
+    # Test Pokemon consume
+    print(pokemon_one.consume("berry"))
+    print(pokemon_one.consume("potion"))
+    print(pokemon_one.consume("poison"))  # mr. ubial doesn't condone
+    print(pokemon_two.consume("berry"))
 
 
 if __name__ == "__main__":
