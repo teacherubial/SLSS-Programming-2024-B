@@ -3,9 +3,13 @@
 # Big Ideas:
 #   - Classes allow us to couple data and functions together
 
+import random
+
 
 # Create a class that represents a Pokemon
 class Pokemon:  # always name classes with capital
+    pokemon_created = 0
+
     def __init__(self):
         """Constructor: contains all properties
         of a Pokemon. It also contains the default
@@ -17,9 +21,11 @@ class Pokemon:  # always name classes with capital
         self.height = 0
         self.type = "Normal"
         self.actual_cry = "Rooooooooooooooar"
+        self.shiny = random.random() < 0.00097656265  # Shiny pokemon at 1/1024 rate
 
         # Announce that Pokemon is born
         print("A Pokémon is born!")
+        Pokemon.pokemon_created += 1
 
     def cry(self) -> str:
         """Represents the sound a Pokemon makes
@@ -72,6 +78,14 @@ class Pikachu(Pokemon):
             response = response + " It was super effective."
 
         return response
+
+
+# Create a new child-class of pokemon for the type of your choice
+# If you don't know any pokemon, use this: https://pokemondb.net/pokedex/national
+#   - create a new child class
+#   - create a constructor and set the default values for its properties
+#       - i.e. its name, id, type, etc.
+#   - create a new method for its attack
 
 
 def main():
@@ -133,6 +147,13 @@ def main():
     # Use the thunder method on pokemon_two
     print(pikachu_one.thunder(pokemon_one))
     print(pikachu_one.thunder(pokemon_two))
+
+    # Test shiny rate
+    some_pokemon = Pokemon()
+    while not some_pokemon.shiny:
+        some_pokemon = Pokemon()
+
+    print(Pokemon.pokemon_created)
 
 
 if __name__ == "__main__":
