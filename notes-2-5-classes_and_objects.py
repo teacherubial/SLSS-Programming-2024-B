@@ -18,6 +18,9 @@ class Pokemon:  # always name classes with capital
         self.type = "Normal"
         self.actual_cry = "Rooooooooooooooar"
 
+        # Announce that Pokemon is born
+        print("A Pokémon is born!")
+
     def cry(self) -> str:
         """Represents the sound a Pokemon makes
 
@@ -42,6 +45,33 @@ class Pokemon:  # always name classes with capital
             return f"{self.name} feels much better after the potion!"
         else:
             return f"{self.name} batted away the {item}!"
+
+
+class Pikachu(Pokemon):
+    """Child class of Pokemon"""
+
+    def __init__(self, name="Pikachu"):
+        # Call the super-class constructor
+        super().__init__()
+
+        # Setting the default values for
+        # a Pikachu
+        self.name = name
+        self.id = 25
+        self.type = "Electric"
+        self.actual_cry = "Pikachu"
+
+    def thunder(self, defender: Pokemon) -> str:
+        """Represents the thunder attack.
+
+        Params:
+            - defender: defending pokemon"""
+        response = f"{self.name} used thunder on {defender.name}."
+
+        if defender.type.lower() == "water":
+            response = response + " It was super effective."
+
+        return response
 
 
 def main():
@@ -81,7 +111,9 @@ def main():
     print(pokemon_two.type)
 
     # Test Pokemon cry
+    pokemon_one.actual_cry = "Pikachu"
     print(pokemon_one.cry())
+    pokemon_two.actual_cry = "Grraaaaaoooorrr"
     print(pokemon_two.cry())
 
     # Test Pokemon consume
@@ -89,6 +121,18 @@ def main():
     print(pokemon_one.consume("potion"))
     print(pokemon_one.consume("poison"))  # mr. ubial doesn't condone
     print(pokemon_two.consume("berry"))
+
+    # Create a new Pikachu object
+    pikachu_one = Pikachu()
+    # Print name, type, and id of pikachu_one
+    print(pikachu_one.name, pikachu_one.type, pikachu_one.id)
+    # Use the Pokemon methods on Pikachu object
+    print(pikachu_one.cry())
+    print(pikachu_one.consume("berry"))
+
+    # Use the thunder method on pokemon_two
+    print(pikachu_one.thunder(pokemon_one))
+    print(pikachu_one.thunder(pokemon_two))
 
 
 if __name__ == "__main__":
