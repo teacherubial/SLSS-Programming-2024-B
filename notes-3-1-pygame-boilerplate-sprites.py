@@ -9,6 +9,8 @@ class Dvdlogo(pygame.sprite.Sprite):
     """Represents the DVD Logo"""
 
     def __init__(self):
+        super().__init__()
+
         self.image = pygame.image.load("./Images/dvd-logo.png")
 
         # sets the x and y to 0
@@ -40,7 +42,12 @@ def start():
     done = False
     clock = pygame.time.Clock()
 
-    pygame.display.set_caption("<WINDOW TITLE HERE>")
+    dvdlogo = Dvdlogo()
+
+    all_sprites = pygame.sprite.Group()
+    all_sprites.add(dvdlogo)
+
+    pygame.display.set_caption("DVD Screen Saver")
 
     # --MAIN LOOP--
     while not done:
@@ -52,7 +59,9 @@ def start():
         # --- Update the world state
 
         # --- Draw items
-        screen.fill(BLUE)
+        screen.fill(BLACK)
+
+        all_sprites.draw(screen)
 
         # Update the screen with anything new
         pygame.display.flip()
