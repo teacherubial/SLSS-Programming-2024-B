@@ -21,6 +21,9 @@ class Dvdlogo(pygame.sprite.Sprite):
         #    first position of the image is in the top right
         self.rect = self.image.get_rect()
 
+        self.rect.centerx = WIDTH
+        self.rect.centery = HEIGHT
+
         # How much position changes over time
         #    - pixels per tick
         self.vel_x = 3
@@ -71,9 +74,6 @@ def start():
     clock = pygame.time.Clock()
 
     dvdlogo = Dvdlogo()
-    # Move the DVD logo to the middle-ish
-    dvdlogo.rect.centerx = WIDTH // 2
-    dvdlogo.rect.centery = HEIGHT // 2
 
     all_sprites = pygame.sprite.Group()
     all_sprites.add(dvdlogo)
