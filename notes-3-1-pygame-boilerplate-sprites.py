@@ -4,6 +4,10 @@
 
 import pygame
 
+WIDTH = 1280  # Pixels
+HEIGHT = 760
+SCREEN_SIZE = (WIDTH, HEIGHT)
+
 
 class Dvdlogo(pygame.sprite.Sprite):
     """Represents the DVD Logo"""
@@ -20,7 +24,7 @@ class Dvdlogo(pygame.sprite.Sprite):
         # How much position changes over time
         #    - pixels per tick
         self.vel_x = 3
-        self.vel_y = 0
+        self.vel_y = 3
 
     def update(self):
         # Update position of Dvdlogo
@@ -31,9 +35,14 @@ class Dvdlogo(pygame.sprite.Sprite):
         # Right side of the screen
         #     - if the right edge of dvdlogo > WIDTH
         #          - switch the direction (+vel-x -> -vel-x)
-        if self.rect.right >= 1280:
+        if self.rect.right >= WIDTH:
             self.vel_x = -self.vel_x
-        # Left side
+        if self.rect.left <= 0:
+            self.vel_x = -self.vel_x
+        if self.rect.bottom >= HEIGHT:
+            self.vel_y = -self.vel_y
+        if self.rect.top <= 0:
+            self.vel_y = -self.vel_y
 
         # Top side
         # Bottom side
@@ -55,10 +64,6 @@ def start():
     GREEN = (0, 255, 0)
     BLUE = (0, 0, 255)
     GRAY = (128, 128, 128)
-
-    WIDTH = 1280  # Pixels
-    HEIGHT = 760
-    SCREEN_SIZE = (WIDTH, HEIGHT)
 
     # --VARIABLES--
     screen = pygame.display.set_mode(SCREEN_SIZE)
