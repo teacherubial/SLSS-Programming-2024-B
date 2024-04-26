@@ -2,6 +2,7 @@
 #    - boilerplate
 #    - Sprite class
 
+import random
 import pygame
 
 WIDTH = 1280  # Pixels
@@ -21,13 +22,13 @@ class Dvdlogo(pygame.sprite.Sprite):
         #    first position of the image is in the top right
         self.rect = self.image.get_rect()
 
-        self.rect.centerx = WIDTH
-        self.rect.centery = HEIGHT
+        self.rect.x = random.randrange(0, WIDTH - self.rect.width)
+        self.rect.y = random.randrange(0, HEIGHT - self.rect.height)
 
         # How much position changes over time
         #    - pixels per tick
-        self.vel_x = 3
-        self.vel_y = 3
+        self.vel_x = random.choice([-6, -5, -4, -3, 3, 4, 5, 6])
+        self.vel_y = random.choice([-6, -5, -4, -3, 3, 4, 5, 6])
 
     def update(self):
         # Update position of Dvdlogo
@@ -46,11 +47,6 @@ class Dvdlogo(pygame.sprite.Sprite):
             self.vel_y = -self.vel_y
         if self.rect.top <= 0:
             self.vel_y = -self.vel_y
-
-        # Top side
-        # Bottom side
-
-        print(self.rect.x, self.rect.y)
 
 
 def start():
@@ -73,10 +69,9 @@ def start():
     done = False
     clock = pygame.time.Clock()
 
-    dvdlogo = Dvdlogo()
-
     all_sprites = pygame.sprite.Group()
-    all_sprites.add(dvdlogo)
+
+    all_sprites.add(Dvdlogo())
 
     pygame.display.set_caption("DVD Screen Saver")
 
@@ -86,6 +81,11 @@ def start():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
+            # Listen for the keyboard space bar to be pressed
+            # spawn a new dvdlogo object
+            if event.type == pygame.KEYDOWN:
+                if pygame.key.get_pressed()[pygame.K_SPACE]:
+                    all_sprites.add(Dvdlogo())
 
         # --- Update the world state
         all_sprites.update()
