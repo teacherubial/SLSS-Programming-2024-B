@@ -9,6 +9,12 @@ WIDTH = 1280  # Pixels
 HEIGHT = 760
 SCREEN_SIZE = (WIDTH, HEIGHT)
 
+LOGO_IMAGES = [
+    pygame.image.load("./Images/dvd-logo.png"),
+    pygame.image.load("./Images/dvd-logo-2.svg"),
+    pygame.image.load("./Images/dvd-logo-3.gif"),
+]
+
 
 class Dvdlogo(pygame.sprite.Sprite):
     """Represents the DVD Logo"""
@@ -16,8 +22,7 @@ class Dvdlogo(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        self.image = pygame.image.load("./Images/dvd-logo.png")
-
+        self.image = random.choice(LOGO_IMAGES)
         # sets the x and y to 0
         #    first position of the image is in the top right
         self.rect = self.image.get_rect()
@@ -39,14 +44,50 @@ class Dvdlogo(pygame.sprite.Sprite):
         # Right side of the screen
         #     - if the right edge of dvdlogo > WIDTH
         #          - switch the direction (+vel-x -> -vel-x)
-        if self.rect.right >= WIDTH:
+        if self.rect.right > WIDTH:
+            self.rect.right = WIDTH
             self.vel_x = -self.vel_x
-        if self.rect.left <= 0:
+        if self.rect.left < 0:
+            self.rect.left = 0
             self.vel_x = -self.vel_x
-        if self.rect.bottom >= HEIGHT:
+        if self.rect.bottom > HEIGHT:
+            self.rect.bottom = HEIGHT
             self.vel_y = -self.vel_y
-        if self.rect.top <= 0:
+        if self.rect.top < 0:
+            self.rect.top = 0
             self.vel_y = -self.vel_y
+
+    def incr_velocity(self):
+        """Increases the velocity in the proper direction"""
+        if self.vel_x < 0:
+            self.vel_x -= 1
+        elif self.vel_x > 0:
+            self.vel_x += 1
+        else:
+            self.vel_x = random.choice([-1, 1])
+
+        if self.vel_y < 0:
+            self.vel_y -= 1
+        elif self.vel_y > 0:
+            self.vel_y += 1
+        else:
+            self.vel_y = random.choice([-1, 1])
+
+    def decr_velocity(self):
+        """Decreases the velocity in the proper direction"""
+        if self.vel_x < 0:
+            self.vel_x += 1
+        elif self.vel_x > 0:
+            self.vel_x -= 1
+        else:
+            self.vel_x = random.choice([-1, 1])
+
+        if self.vel_y < 0:
+            self.vel_y += 1
+        elif self.vel_y > 0:
+            self.vel_y -= 1
+        else:
+            self.vel_y = random.choice([-1, 1])
 
 
 def start():
@@ -86,6 +127,15 @@ def start():
             if event.type == pygame.KEYDOWN:
                 if pygame.key.get_pressed()[pygame.K_SPACE]:
                     all_sprites.add(Dvdlogo())
+                if pygame.key.get_pressed()[pygame.K_1]:
+                    for sprite in all_sprites:
+                        sprite.incr_velocity()
+                if pygame.key.get_pressed()[pygame.K_2]:
+                    for sprite in all_sprites:
+                        sprite.decr_velocity()
+                if pygame.key.get_pressed()[pygame.K_BACKSPACE]:
+                    if len(all_sprites) > 0:
+                        all_sprites.spritedict.popitem()
 
         # --- Update the world state
         all_sprites.update()
