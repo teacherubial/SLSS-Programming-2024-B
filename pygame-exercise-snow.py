@@ -1,3 +1,4 @@
+import random
 import pygame as pg
 
 # --CONSTANTS--
@@ -31,8 +32,10 @@ class Snowflake(pg.sprite.Sprite):
         pg.draw.circle(self.image, WHITE, (size // 2, size // 2), size // 2)
 
         self.rect = self.image.get_rect()
+
         # Spawn it in the middle of the screen
-        self.rect.centerx = WIDTH // 2
+        # Chooses a random x-coordinate
+        self.rect.centerx = random.randrange(0, WIDTH + 1)
         self.rect.centery = HEIGHT // 2
 
 
@@ -49,8 +52,9 @@ def start():
     # All sprites go in this sprite Group
     all_sprites = pg.sprite.Group()
 
-    # Add one snowflake to the all_sprites Group
-    all_sprites.add(Snowflake(10))
+    # Add 100 snowflakes to the all_sprites Group
+    for _ in range(100):
+        all_sprites.add(Snowflake(10))
 
     pg.display.set_caption("Snowfall Landscape")
 
