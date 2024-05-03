@@ -80,6 +80,15 @@ class Pikachu(Pokemon):
         return response
 
 
+class Kecleon(Pokemon):
+    def __init__(self, name="Kecleon"):
+        pass
+
+    def fury_swipes(self, defender: Pokemon) -> str:
+        """Simulates fury swipes move"""
+        pass
+
+
 # Create a new child-class of pokemon for the type of your choice
 # If you don't know any pokemon, use this: https://pokemondb.net/pokedex/national
 #   - create a new child class

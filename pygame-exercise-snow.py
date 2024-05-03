@@ -38,6 +38,9 @@ class Snowflake(pg.sprite.Sprite):
         self.rect.centerx = random.randrange(0, WIDTH + 1)
         self.rect.centery = HEIGHT // 2
 
+    def update(self):
+        """Make the snow fall from top to bottom"""
+
 
 def start():
     """Environment Setup and Game Loop"""
