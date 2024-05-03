@@ -2,6 +2,8 @@
 
 # A Jewel Thief Clone
 
+import random
+
 import pygame as pg
 
 # --CONSTANTS--
@@ -18,6 +20,8 @@ WIDTH = 1280  # Pixels
 HEIGHT = 720
 SCREEN_SIZE = (WIDTH, HEIGHT)
 
+NUM_COINS = 1
+
 
 class Player(pg.sprite.Sprite):
     def __init__(self):
@@ -33,22 +37,45 @@ class Player(pg.sprite.Sprite):
         self.rect.centery = pg.mouse.get_pos()[1]
 
 
+class Coin(pg.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+
+        self.image = pg.image.load("./Images/coin.png")
+        self.rect = self.image.get_rect()
+
+        # Randomize initial location
+        self.rect.x = random.randrange(0, WIDTH - self.rect.width)
+        self.rect.y = random.randrange(0, HEIGHT - self.rect.height)
+
+
 def start():
     """Environment Setup and Game Loop"""
 
     pg.init()
+
+    # Hide the mouse
+    pg.mouse.set_visible(False)
 
     # --Game State Variables--
     screen = pg.display.set_mode(SCREEN_SIZE)
     done = False
     clock = pg.time.Clock()
 
-    # All sprites go in this sprite Group
+    # Sprite Groups
     all_sprites = pg.sprite.Group()
+    coin_sprites = pg.sprite.Group()
 
     # Create Player object
     player = Player()
     all_sprites.add(player)
+
+    # Create Coin objects
+    for _ in range(NUM_COINS):
+        coin = Coin()
+
+        all_sprites.add(coin)
+        coin_sprites.add(coin)
 
     pg.display.set_caption("Jewel Thief Clone (Nintendo Don't Sue Us)")
 
@@ -63,7 +90,7 @@ def start():
         all_sprites.update()
 
         # --- Draw items
-        screen.fill(BLACK)
+        screen.fill(WHITE)
 
         all_sprites.draw(screen)
 
