@@ -20,7 +20,7 @@ WIDTH = 1280  # Pixels
 HEIGHT = 720
 SCREEN_SIZE = (WIDTH, HEIGHT)
 
-NUM_COINS = 50
+NUM_COINS = 100
 
 
 class Player(pg.sprite.Sprite):
@@ -90,11 +90,19 @@ def start():
         all_sprites.update()
 
         # Get a list of ALL COINS Mario has collided with
-        coins_collided = pg.sprite.spritecollide(player, coin_sprites, False)
+        coins_collided = pg.sprite.spritecollide(player, coin_sprites, True)
 
         # For every coin collided with, print "COLLIDED!"
         for coin in coins_collided:
             print(f"COLLIDED at {coin.rect.x} {coin.rect.y}!")
+
+        # If the coin_sprites group is empty, respawn all coins
+        if len(coin_sprites) <= 0:
+            for _ in range(NUM_COINS):
+                coin = Coin()
+
+                all_sprites.add(coin)
+                coin_sprites.add(coin)
 
         # --- Draw items
         screen.fill(WHITE)
