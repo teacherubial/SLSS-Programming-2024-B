@@ -62,6 +62,8 @@ def start():
     done = False
     clock = pg.time.Clock()
 
+    score = 0
+
     # Sprite Groups
     all_sprites = pg.sprite.Group()
     coin_sprites = pg.sprite.Group()
@@ -92,9 +94,11 @@ def start():
         # Get a list of ALL COINS Mario has collided with
         coins_collided = pg.sprite.spritecollide(player, coin_sprites, True)
 
-        # For every coin collided with, print "COLLIDED!"
         for coin in coins_collided:
-            print(f"COLLIDED at {coin.rect.x} {coin.rect.y}!")
+            # Increase the score by 10
+            score += 10
+
+            print(f"Score: {score}")
 
         # If the coin_sprites group is empty, respawn all coins
         if len(coin_sprites) <= 0:
