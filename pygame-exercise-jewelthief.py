@@ -23,6 +23,12 @@ SCREEN_SIZE = (WIDTH, HEIGHT)
 NUM_COINS = 100
 NUM_ENEMIES = 5
 
+GOOMBA_IMAGE = pg.image.load("./Images/goomba.png")
+
+GOOMBA_IMAGE_SMALL = pg.transform.scale(
+    GOOMBA_IMAGE, (GOOMBA_IMAGE.get_width() // 2, GOOMBA_IMAGE.get_height() // 2)
+)
+
 
 class Player(pg.sprite.Sprite):
     def __init__(self):
@@ -68,7 +74,8 @@ class Goomba(pg.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        self.image = pg.image.load("./Images/goomba.png")
+        # set the image to a scaled version
+        self.image = GOOMBA_IMAGE_SMALL
 
         self.rect = self.image.get_rect()
 
@@ -78,6 +85,8 @@ class Goomba(pg.sprite.Sprite):
 
         self.vel_x = random.choice([-6, -5, -4, 4, 5, 6])
         self.vel_y = random.choice([-6, -5, -4, 4, 5, 6])
+
+        self.max_speed = 9
 
     def update(self):
         """Make the goomba move and bounce"""
@@ -97,6 +106,20 @@ class Goomba(pg.sprite.Sprite):
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH
             self.vel_x *= -1
+
+    def increase_speed(self):
+        """Increase speed to a limit"""
+
+        if abs(self.vel_x) < self.max_speed:
+            if self.vel_x > 0:
+                self.vel_x += 0.25
+            else:
+                self.vel_x -= 0.25
+        if abs(self.vel_y) < self.max_speed:
+            if self.vel_y > 0:
+                self.vel_y += 0.25
+            else:
+                self.vel_y -= 0.25
 
 
 def start():
@@ -158,13 +181,16 @@ def start():
 
             print(f"Score: {score}")
 
-        # If the coin_sprites group is empty, respawn all coins
+        # If the coin_sprites group is empty, respawn all coins and increase enemy speed
         if len(coin_sprites) <= 0:
             for _ in range(NUM_COINS):
                 coin = Coin()
 
                 all_sprites.add(coin)
                 coin_sprites.add(coin)
+
+            for sprite in enemy_sprites:
+                sprite.increase_speed()
 
         # --- Draw items
         screen.fill(WHITE)
