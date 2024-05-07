@@ -21,20 +21,35 @@ HEIGHT = 720
 SCREEN_SIZE = (WIDTH, HEIGHT)
 
 NUM_COINS = 100
+NUM_ENEMIES = 5
 
 
 class Player(pg.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        self.image = pg.image.load("./Images/mario.webp")
+        self.images = [
+            pg.image.load("./Images/mario.webp"),
+            pg.transform.flip(pg.image.load("./Images/mario.webp"), True, False),
+        ]
+
+        self.facing = 0  # 0 is right
+        self.image = self.images[self.facing]
 
         self.rect = self.image.get_rect()
 
     def update(self):
         """Update the location of Mario with the mouse"""
-        self.rect.centerx = pg.mouse.get_pos()[0]
-        self.rect.centery = pg.mouse.get_pos()[1]
+        next_pos = pg.mouse.get_pos()
+
+        if self.rect.centerx > next_pos[0]:
+            self.facing = 1
+        elif self.rect.centerx < next_pos[0]:
+            self.facing = 0
+
+        self.image = self.images[self.facing]
+
+        self.rect.center = next_pos
 
 
 class Coin(pg.sprite.Sprite):
@@ -47,6 +62,41 @@ class Coin(pg.sprite.Sprite):
         # Randomize initial location
         self.rect.x = random.randrange(0, WIDTH - self.rect.width)
         self.rect.y = random.randrange(0, HEIGHT - self.rect.height)
+
+
+class Goomba(pg.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+
+        self.image = pg.image.load("./Images/goomba.png")
+
+        self.rect = self.image.get_rect()
+
+        # Spawn in a random location
+        self.rect.x = random.randrange(0, WIDTH - self.rect.width)
+        self.rect.y = random.randrange(0, HEIGHT - self.rect.height)
+
+        self.vel_x = random.choice([-6, -5, -4, 4, 5, 6])
+        self.vel_y = random.choice([-6, -5, -4, 4, 5, 6])
+
+    def update(self):
+        """Make the goomba move and bounce"""
+        self.rect.x += self.vel_x
+        self.rect.y += self.vel_y
+
+        # Bounce off the edge of the screen
+        if self.rect.top < 0:
+            self.rect.top = 0  # keep it inside the screen
+            self.vel_y *= -1
+        if self.rect.bottom > HEIGHT:
+            self.rect.bottom = HEIGHT
+            self.vel_y *= -1
+        if self.rect.left < 0:
+            self.rect.left = 0
+            self.vel_x *= -1
+        if self.rect.right > WIDTH:
+            self.rect.right = WIDTH
+            self.vel_x *= -1
 
 
 def start():
@@ -67,6 +117,7 @@ def start():
     # Sprite Groups
     all_sprites = pg.sprite.Group()
     coin_sprites = pg.sprite.Group()
+    enemy_sprites = pg.sprite.Group()
 
     # Create Player object
     player = Player()
@@ -78,6 +129,13 @@ def start():
 
         all_sprites.add(coin)
         coin_sprites.add(coin)
+
+    # Create enemies
+    for _ in range(NUM_ENEMIES):
+        enemy = Goomba()
+
+        all_sprites.add(enemy)
+        enemy_sprites.add(enemy)
 
     pg.display.set_caption("Jewel Thief Clone (Nintendo Don't Sue Us)")
 
