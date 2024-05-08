@@ -44,6 +44,8 @@ class Player(pg.sprite.Sprite):
 
         self.rect = self.image.get_rect()
 
+        self.lives = 10
+
     def update(self):
         """Update the location of Mario with the mouse"""
         next_pos = pg.mouse.get_pos()
@@ -191,6 +193,15 @@ def start():
 
             for sprite in enemy_sprites:
                 sprite.increase_speed()
+
+        # Check for collision between the enemies and the player
+        enemies_collided = pg.sprite.spritecollide(player, enemy_sprites, False)
+
+        # If collided with enemy, decrease the player's life
+        for enemy in enemies_collided:
+            player.lives -= 0.1
+
+            print(int(player.lives))
 
         # --- Draw items
         screen.fill(WHITE)
