@@ -139,6 +139,8 @@ def start():
 
     score = 0
 
+    font = pg.font.SysFont("Futura", 24)
+
     # Sprite Groups
     all_sprites = pg.sprite.Group()
     coin_sprites = pg.sprite.Group()
@@ -206,7 +208,13 @@ def start():
         # --- Draw items
         screen.fill(WHITE)
 
+        # Create a surface for the score
+        score_image = font.render(f"Score: {score}", True, BLACK)
+
         all_sprites.draw(screen)
+
+        # "Blit" the surface on the screen
+        screen.blit(score_image, (5, 5))
 
         # Update the screen with anything new
         pg.display.flip()
