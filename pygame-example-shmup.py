@@ -18,9 +18,6 @@ HEIGHT = 1000
 SCREEN_SIZE = (WIDTH, HEIGHT)
 
 
-# TODO: Player class
-#   - player moves with the mouse
-#   - player's position limited to the bottom part of screen
 class Player(pg.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -38,11 +35,32 @@ class Player(pg.sprite.Sprite):
         """Follow the mouse."""
         self.rect.center = pg.mouse.get_pos()
 
+        # Keep at bottom of screen
+        if self.rect.top < HEIGHT - 200:
+            self.rect.top = HEIGHT - 200
+
 
 # TODO: Bullet class
 #   - image of the bullets, picture? pygame rectangle?
 #   - spawn at the player
 #   - vertical movement
+class Bullet(pg.sprite.Sprite):
+    def __init__(self, player_loc: list):
+        """
+        Params:
+            player_loc: xy coordinates of centerx and top of player
+        """
+        super().__init__()
+
+        self.image = pg.Surface((10, 25))
+        self.image.fill(GREEN)
+
+        self.rect = self.image.get_rect()
+
+        # Set its initial position to player's centerx and top
+        self.rect.centerx = player_loc[0]
+        self.rect.bottom = player_loc[1]
+
 
 # TODO: Enemy class
 #   - side to side movement
@@ -74,6 +92,9 @@ def start():
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 done = True
+            if event.type == pg.MOUSEBUTTONDOWN:
+                # Create a new bullet
+                all_sprites.add(Bullet((player.rect.centerx, player.rect.top)))
 
         # --- Update the world state
         all_sprites.update()
