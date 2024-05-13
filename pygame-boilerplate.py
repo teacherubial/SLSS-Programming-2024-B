@@ -48,6 +48,8 @@ def start():
         # --- Tick the Clock
         clock.tick(60)  # 60 fps
 
+    pg.quit()
+
 
 def main():
     start()
